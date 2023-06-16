@@ -9,5 +9,5 @@ func (h *Handler) Encode(w http.ResponseWriter, _ *http.Request) {
 	response := map[string]string{
 		"Status": "ok",
 	}
-	utility.RespondOkayJson(w, response)
+	utility.RespondJson(w, http.StatusOK, response)
 }

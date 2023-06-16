@@ -1,13 +1,22 @@
 package utility
 
 import (
+	"bytes"
 	"encoding/json"
-	"net/http"
 )
 
-func RespondOkayJson(w http.ResponseWriter, data interface{}) {
-	b, _ := json.Marshal(data)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write(b)
+var EmptyByte = []byte(`{}`)
+
+func IsValidJson(data []byte) bool {
+	if len(data) == 0 {
+		return false
+	}
+	buffer := new(bytes.Buffer)
+	if err := json.Compact(buffer, data); err != nil {
+		return false
+	}
+	if bytes.Equal(buffer.Bytes(), EmptyByte) {
+		return false
+	}
+	return true
 }
